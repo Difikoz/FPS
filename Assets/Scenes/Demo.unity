@@ -148,8 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60fe443f02418154fafa57818d3375fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CityZoneCount: 200
-  BigSectorCount: 500
+  CityZoneCount: 500
+  BigSectorCount: 100
   CellLength: 50
   ParentRoot: {fileID: 1976400325}
   SmallCells:
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ParentRoot: {fileID: 1460247912}
-  RoomCount: 100
+  RoomCount: 20
   CellLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -311,8 +311,6 @@ MonoBehaviour:
   - {fileID: 330546594361903402, guid: e6d3177af4ac0904d89411af05b500ae, type: 3}
   CellPrefabs:
   - {fileID: -6784982675034364850, guid: 4b29d7c4164535146bcce9da5f272cfe, type: 3}
-  - {fileID: 5265196270627548212, guid: 7fdf0ce100d570d4e808e71aaeb5d42b, type: 3}
-  - {fileID: 5428626794942048183, guid: 745ddb39886dccd49b96446346e39cae, type: 3}
 --- !u!4 &783862709
 Transform:
   m_ObjectHideFlags: 0

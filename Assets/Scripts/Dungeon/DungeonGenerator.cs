@@ -62,7 +62,7 @@ namespace WinterUniverse
                     }
                     CreatedExits.Remove(createdExit);
                     CreatedExits.Remove(selectedExit);
-                    Instantiate(DoorPrefabs[Random.Range(0, DoorPrefabs.Length)], createdExit.transform.position, createdExit.transform.rotation, transform);
+                    Instantiate(DoorPrefabs[Random.Range(0, DoorPrefabs.Length)], createdExit.transform.position, createdExit.transform.rotation, ParentRoot);
                     DestroyImmediate(createdExit.gameObject);
                     DestroyImmediate(selectedExit.gameObject);
                 }
@@ -74,7 +74,7 @@ namespace WinterUniverse
             // instead doors
             for (int i = 0; i < CreatedExits.Count; i++)
             {
-                Instantiate(InsteadDoor, CreatedExits[i].position, CreatedExits[i].rotation, transform);
+                Instantiate(InsteadDoor, CreatedExits[i].position, CreatedExits[i].rotation, ParentRoot);
                 DestroyImmediate(CreatedExits[i].gameObject);
             }
         }
