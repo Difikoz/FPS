@@ -8,6 +8,8 @@ namespace WinterUniverse
         public Transform ParentRoot;
         [Range(5, 500)] public int RoomCount = 10;
         public LayerMask CellLayer;
+        public bool SpawnFirstRoom = true;
+        public DungeonCell FirstRoom;
         public GameObject InsteadDoor;
         public GameObject[] DoorPrefabs;
         public DungeonCell[] CellPrefabs;
@@ -16,7 +18,15 @@ namespace WinterUniverse
         {
             Clear();
             List<Transform> CreatedExits = new();
-            DungeonCell StartRoom = Instantiate(CellPrefabs[Random.Range(0, CellPrefabs.Length)], Vector3.zero, Quaternion.identity, ParentRoot);
+            DungeonCell StartRoom;
+            if (SpawnFirstRoom && FirstRoom != null)
+            {
+                StartRoom = Instantiate(FirstRoom, Vector3.zero, Quaternion.identity, ParentRoot);
+            }
+            else
+            {
+                StartRoom = Instantiate(CellPrefabs[Random.Range(0, CellPrefabs.Length)], Vector3.zero, Quaternion.identity, ParentRoot);
+            }
             for (int i = 0; i < StartRoom.Exits.Length; i++)
             {
                 CreatedExits.Add(StartRoom.Exits[i].transform);
