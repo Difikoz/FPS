@@ -11,6 +11,11 @@ TagManager:
   - Cell
   - Water
   - UI
+  - Interactable
+  - Damageable
+  - Damage
+  - Pawn
+  - EventTrigger
   - 
   - 
   - 
@@ -31,12 +36,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - WorldSpaceUI
   m_SortingLayers:
   - name: Default
     uniqueID: 0

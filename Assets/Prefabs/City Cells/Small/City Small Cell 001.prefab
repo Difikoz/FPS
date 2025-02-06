@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 844664495252265665}
   - component: {fileID: -8114756835619805400}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: City Small Cell 001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
