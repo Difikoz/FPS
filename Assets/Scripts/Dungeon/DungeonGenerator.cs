@@ -9,10 +9,10 @@ namespace WinterUniverse
         [Range(5, 500)] public int RoomCount = 10;
         public LayerMask CellLayer;
         public bool SpawnFirstRoom = true;
-        public DungeonCell FirstRoom;
+        public GameObject FirstRoom;
         public GameObject InsteadDoor;
         public GameObject[] DoorPrefabs;
-        public DungeonCell[] CellPrefabs;
+        public GameObject[] CellPrefabs;
 
         public void Generate()
         {
@@ -21,11 +21,11 @@ namespace WinterUniverse
             DungeonCell StartRoom;
             if (SpawnFirstRoom && FirstRoom != null)
             {
-                StartRoom = Instantiate(FirstRoom, Vector3.zero, Quaternion.identity, ParentRoot);
+                StartRoom = Instantiate(FirstRoom, Vector3.zero, Quaternion.identity, ParentRoot).GetComponent<DungeonCell>();
             }
             else
             {
-                StartRoom = Instantiate(CellPrefabs[Random.Range(0, CellPrefabs.Length)], Vector3.zero, Quaternion.identity, ParentRoot);
+                StartRoom = Instantiate(CellPrefabs[Random.Range(0, CellPrefabs.Length)], Vector3.zero, Quaternion.identity, ParentRoot).GetComponent<DungeonCell>();
             }
             for (int i = 0; i < StartRoom.Exits.Length; i++)
             {
@@ -36,39 +36,39 @@ namespace WinterUniverse
             while (limit > 0 && roomsLeft > 0)
             {
                 limit--;
-                DungeonCell selectedPrefab = Instantiate(CellPrefabs[Random.Range(0, CellPrefabs.Length)], Vector3.zero, Quaternion.identity, ParentRoot);
+                DungeonCell selectedRoom = Instantiate(CellPrefabs[SelectPrefab(CellPrefabs)], Vector3.zero, Quaternion.identity, ParentRoot).GetComponent<DungeonCell>();
                 int lim = 100;
                 bool collided;
                 Transform selectedExit;
-                Transform createdExit; // из списка созданных входов
-                selectedPrefab.TriggerBox.enabled = false; // чтобы сам себя не проверял на наличие нахлеста ВЫКЛЮЧИЛ
+                Transform createdExit;
+                selectedRoom.TriggerBox.enabled = false;
                 do
                 {
                     lim--;
                     createdExit = CreatedExits[Random.Range(0, CreatedExits.Count)];
-                    selectedExit = selectedPrefab.Exits[Random.Range(0, selectedPrefab.Exits.Length)].transform;
+                    selectedExit = selectedRoom.Exits[Random.Range(0, selectedRoom.Exits.Length)].transform;
                     // rotation
                     float shiftAngle = createdExit.eulerAngles.y + 180 - selectedExit.eulerAngles.y;
-                    selectedPrefab.transform.Rotate(new Vector3(0, shiftAngle, 0)); // выходы повернуты друг напротив друга
+                    selectedRoom.transform.Rotate(new Vector3(0, shiftAngle, 0));
                     // position
                     Vector3 shiftPosition = createdExit.position - selectedExit.position;
-                    selectedPrefab.transform.position += shiftPosition; // выходы состыковались
+                    selectedRoom.transform.position += shiftPosition;
                     // check
-                    Vector3 center = selectedPrefab.transform.position + selectedPrefab.TriggerBox.center.z * selectedPrefab.transform.forward
-                        + selectedPrefab.TriggerBox.center.y * selectedPrefab.transform.up
-                        + selectedPrefab.TriggerBox.center.x * selectedPrefab.transform.right; // selectedPrefab.TriggerBox.center
-                    Vector3 size = selectedPrefab.TriggerBox.size / 2f; // half size
-                    Quaternion rot = selectedPrefab.transform.localRotation;
+                    Vector3 center = selectedRoom.transform.position + selectedRoom.TriggerBox.center.z * selectedRoom.transform.forward
+                        + selectedRoom.TriggerBox.center.y * selectedRoom.transform.up
+                        + selectedRoom.TriggerBox.center.x * selectedRoom.transform.right;
+                    Vector3 size = selectedRoom.TriggerBox.size / 2f;
+                    Quaternion rot = selectedRoom.transform.localRotation;
                     collided = Physics.CheckBox(center, size, rot, CellLayer, QueryTriggerInteraction.Collide);
 
                 } while (collided && lim > 0);
-                selectedPrefab.TriggerBox.enabled = true; // ВКЛЮЧИЛ
+                selectedRoom.TriggerBox.enabled = true;
                 if (lim > 0)
                 {
                     roomsLeft--;
-                    for (int j = 0; j < selectedPrefab.Exits.Length; j++)
+                    for (int j = 0; j < selectedRoom.Exits.Length; j++)
                     {
-                        CreatedExits.Add(selectedPrefab.Exits[j].transform);
+                        CreatedExits.Add(selectedRoom.Exits[j].transform);
                     }
                     CreatedExits.Remove(createdExit);
                     CreatedExits.Remove(selectedExit);
@@ -78,7 +78,7 @@ namespace WinterUniverse
                 }
                 else
                 {
-                    DestroyImmediate(selectedPrefab.gameObject);
+                    DestroyImmediate(selectedRoom.gameObject);
                 }
             }
             // instead doors
@@ -95,6 +95,23 @@ namespace WinterUniverse
             {
                 DestroyImmediate(ParentRoot.GetChild(0).gameObject);
             }
+        }
+
+        private int SelectPrefab(GameObject[] List)
+        {
+            int VeritySumm = 0;
+            for (int k = 0; k < List.Length; k++)
+                VeritySumm += List[k].GetComponent<DungeonCell>().Chance;
+
+            int CheckSumm = 0, i = 0;
+            int IntRandom = Random.Range(1, VeritySumm);
+            while (CheckSumm < IntRandom)
+            {
+                CheckSumm += List[i].GetComponent<DungeonCell>().Chance;
+                i++;
+            }
+            i--;
+            return i;
         }
     }
 }

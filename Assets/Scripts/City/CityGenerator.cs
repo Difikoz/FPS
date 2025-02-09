@@ -10,10 +10,10 @@ namespace WinterUniverse
         public int BigSectorCount = 500;
         public int CellLength = 50;
         public Transform ParentRoot;
-        public CityCell[] SmallCells;
-        public CityCell[] LongCells;
-        public CityCell[] BigCells;
-        public CityCell[] AngleCells;
+        public GameObject[] SmallCells;
+        public GameObject[] LongCells;
+        public GameObject[] BigCells;
+        public GameObject[] AngleCells;
 
         private Vector3Int _parentRootPosition;
         private int _mapLength;
@@ -189,7 +189,7 @@ namespace WinterUniverse
                         case (1): // 1x1
                             {
                                 selected = SelectPrefab(SmallCells);
-                                Instantiate(SmallCells[selected].gameObject,
+                                Instantiate(SmallCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, 90 * Random.Range(0, 4), 0),
                                     ParentRoot);
@@ -198,7 +198,7 @@ namespace WinterUniverse
                         case (21): // 1x2
                             {
                                 selected = SelectPrefab(LongCells);
-                                Instantiate(LongCells[selected].gameObject,
+                                Instantiate(LongCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, 0, 0),
                                     ParentRoot);
@@ -207,7 +207,7 @@ namespace WinterUniverse
                         case (22): // 1x2 rotate -90
                             {
                                 selected = SelectPrefab(LongCells);
-                                Instantiate(LongCells[selected].gameObject,
+                                Instantiate(LongCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, -90, 0),
                                     ParentRoot);
@@ -216,7 +216,7 @@ namespace WinterUniverse
                         case (31): // angle
                             {
                                 selected = SelectPrefab(AngleCells);
-                                Instantiate(AngleCells[selected].gameObject,
+                                Instantiate(AngleCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, 0, 0),
                                     ParentRoot);
@@ -225,7 +225,7 @@ namespace WinterUniverse
                         case (32): // angle rotate -90
                             {
                                 selected = SelectPrefab(AngleCells);
-                                Instantiate(AngleCells[selected].gameObject,
+                                Instantiate(AngleCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, -90, 0),
                                     ParentRoot);
@@ -234,7 +234,7 @@ namespace WinterUniverse
                         case (41): // sqare
                             {
                                 selected = SelectPrefab(BigCells);
-                                Instantiate(BigCells[selected].gameObject,
+                                Instantiate(BigCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, 0, 0),
                                     ParentRoot);
@@ -243,7 +243,7 @@ namespace WinterUniverse
                         case (42): // sqare shift
                             {
                                 selected = SelectPrefab(BigCells);
-                                Instantiate(BigCells[selected].gameObject,
+                                Instantiate(BigCells[selected],
                                     new Vector3Int(x - _mapLength / 2, 0, y - _mapLength / 2) * CellLength + _parentRootPosition,
                                     Quaternion.Euler(0, 180, 0),
                                     ParentRoot);
@@ -265,17 +265,17 @@ namespace WinterUniverse
             if (_intMap[x - 1, y] == 0) _vacant.Add(new Vector2Int(x - 1, y)); else _vacant.Remove(new Vector2Int(x - 1, y));
         }
 
-        private int SelectPrefab(CityCell[] List)
+        private int SelectPrefab(GameObject[] List)
         {
             int VeritySumm = 0;
             for (int k = 0; k < List.Length; k++)
-                VeritySumm += List[k].Chance;
+                VeritySumm += List[k].GetComponent<CityCell>().Chance;
 
             int CheckSumm = 0, i = 0;
             int IntRandom = Random.Range(1, VeritySumm);
             while (CheckSumm < IntRandom)
             {
-                CheckSumm += List[i].Chance;
+                CheckSumm += List[i].GetComponent<CityCell>().Chance;
                 i++;
             }
             i--;
