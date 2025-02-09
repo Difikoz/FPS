@@ -13,7 +13,7 @@ namespace WinterUniverse
         [SerializeField] private float _verticalLookSpeed = 5f;
         [SerializeField] private float _verticalLookAngleLimit = 90f;
 
-        public void HandleRotation(Vector2 input)
+        public void Rotate(Vector2 input)
         {
             if (input.x != 0f)
             {

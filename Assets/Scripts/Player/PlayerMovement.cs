@@ -27,7 +27,7 @@ namespace WinterUniverse
             _cc = GetComponent<CharacterController>();
         }
 
-        public void HandleMovement(Vector2 input)
+        public void Move(Vector2 input)
         {
             if (_jumpTime > 0f)
             {
@@ -37,7 +37,7 @@ namespace WinterUniverse
                     ApplyJumpForce();
                 }
             }
-            _isGrounded = _fallVelocity.y <= 0f && Physics.SphereCast(transform.position + _cc.center, _cc.radius, Vector3.down, out _groundHit, _cc.center.y, _groundMask);
+            _isGrounded = _fallVelocity.y <= 0f && Physics.SphereCast(transform.position + _cc.center, _cc.radius, Vector3.down, out _groundHit, _cc.center.y - (_cc.radius / 2f), _groundMask);
             if (_isGrounded)
             {
                 _groundedTime = _timeToFall;
