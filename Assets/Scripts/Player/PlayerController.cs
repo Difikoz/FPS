@@ -48,6 +48,8 @@ namespace WinterUniverse
             _camera = GetComponentInChildren<CameraController>();
             _movement.Initialize();
             _camera.Initialize();
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
 
         private void Update()
